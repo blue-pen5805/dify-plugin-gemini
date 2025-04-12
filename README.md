@@ -11,7 +11,7 @@ forked from [Official Plugin](https://github.com/langgenius/dify-official-plugin
   - Add `response_format` parameter.
   - Add `safety_settings` parameter.
 - supports `FinishReason.SAFETY`.
-- Add `deprecated` flags for replaced models.
+- Remove deprecated models.
 
 ---
 
