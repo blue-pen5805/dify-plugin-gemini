@@ -1,0 +1,31 @@
+#!/usr/bin/env bash
+set -eu
+
+if [ "$#" == 0 ]; then
+  PLUGIN_DIR=$(find . -mindepth 1 -maxdepth 1 -type d ! -name '.*' -exec test -f '{}/manifest.yaml' \; -printf '%f\n' | head -n 1)
+else
+  PLUGIN_DIR="$1"
+fi
+
+# Check if directory exists
+if [ ! -d "$PLUGIN_DIR" ]; then
+  echo "Error: Directory '$PLUGIN_DIR' does not exist."
+  exit 1
+fi
+
+# Read author and version from manifest.yaml
+if [ -f "$PLUGIN_DIR/manifest.yaml" ]; then
+  AUTHOR=$(grep -E "^author:" "$PLUGIN_DIR/manifest.yaml" | cut -d ":" -f2 | xargs)
+  VERSION=$(grep -E "^version:" "$PLUGIN_DIR/manifest.yaml" | cut -d ":" -f2 | xargs)
+
+  if [ -n "$AUTHOR" ] && [ -n "$VERSION" ]; then
+    OUTPUT_NAME="$AUTHOR-$PLUGIN_DIR-$VERSION"
+  else
+    OUTPUT_NAME="$PLUGIN_DIR"
+  fi
+else
+  echo "Error: manifest.yaml not found in $PLUGIN_DIR"
+  exit 1
+fi
+
+./dify-plugin plugin package "$PLUGIN_DIR" -o "$OUTPUT_NAME.difypkg"

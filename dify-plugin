@@ -1,0 +1,40 @@
+#!/usr/bin/env bash
+set -eu
+VERSION="0.0.7"
+
+OS=""
+case $(uname) in
+    Darwin) OS="darwin" ;;
+    Linux)  OS="linux" ;;
+    *)      echo "Unsupported OS"; exit 1 ;;
+esac
+
+ARCHITECTURE=""
+case $(uname -m) in
+    x86_64) ARCHITECTURE="amd64" ;;
+    arm64)  ARCHITECTURE="arm64" ;;
+    *)      echo "Unsupported architecture"; exit 1 ;;
+esac
+
+ASSET_NAME="dify-plugin-$OS-$ARCHITECTURE"
+FILENAME="${ASSET_NAME}_$VERSION"
+FILEPATH="./.bin/$FILENAME"
+
+if [ -f $FILEPATH ]; then
+  : # do nothing
+else
+  # Installing the Dify Plugin Development Scaffolding Tool
+  URL="https://github.com/langgenius/dify-plugin-daemon/releases/download/$VERSION/${ASSET_NAME}"
+
+  echo "Downloading plugin..."
+  curl -L "$URL" -o "$FILEPATH"
+  if [ $? -eq 0 ]; then
+    chmod +x "$FILEPATH"
+    echo "Plugin downloaded and made executable."
+  else
+    echo "Failed to download the plugin." >&2
+    exit 1
+  fi
+fi
+
+exec "$FILEPATH" "$@"
