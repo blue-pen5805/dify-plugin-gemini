@@ -206,6 +206,32 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
                 raise errors.FunctionInvocationError("Invalid JSON Schema")
             config.response_schema = schema
             config.response_mime_type = "application/json"
+        elif model_parameters.get("response_format") == "json_object":
+            config.response_mime_type = "application/json"
+
+        if safety_settings := model_parameters.get("safety_settings"):
+            config.safety_settings = [
+                types.SafetySetting(
+                    category=types.HarmCategory.HARM_CATEGORY_HARASSMENT,
+                    threshold=types.HarmBlockThreshold[safety_settings],
+                ),
+                types.SafetySetting(
+                    category=types.HarmCategory.HARM_CATEGORY_HATE_SPEECH,
+                    threshold=types.HarmBlockThreshold[safety_settings],
+                ),
+                types.SafetySetting(
+                    category=types.HarmCategory.HARM_CATEGORY_SEXUALLY_EXPLICIT,
+                    threshold=types.HarmBlockThreshold[safety_settings],
+                ),
+                types.SafetySetting(
+                    category=types.HarmCategory.HARM_CATEGORY_DANGEROUS_CONTENT,
+                    threshold=types.HarmBlockThreshold[safety_settings],
+                ),
+                types.SafetySetting(
+                    category=types.HarmCategory.HARM_CATEGORY_CIVIC_INTEGRITY,
+                    threshold=types.HarmBlockThreshold[safety_settings],
+                ),
+            ]
         if stop:
             config.stop_sequences = stop
 
@@ -416,7 +442,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         index = -1
         for r in response:
             assistant_prompt_message = AssistantPromptMessage(content="")
-            parts = r.candidates[0].content.parts
+            parts = getattr(r.candidates[0].content, "parts", [])
             index += 1
             for part in parts:
                 if part.text:

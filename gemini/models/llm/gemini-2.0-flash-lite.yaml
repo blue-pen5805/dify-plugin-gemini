@@ -16,6 +16,8 @@ model_properties:
 parameter_rules:
   - name: temperature
     use_template: temperature
+    min: 0
+    max: 2
   - name: top_p
     use_template: top_p
   - name: top_k
@@ -32,8 +34,35 @@ parameter_rules:
     default: 8192
     min: 1
     max: 8192
+  - name: response_format
+    label:
+      zh_Hans: 回复格式
+      en_US: Response Format
+    type: string
+    help:
+      zh_Hans: 指定模型必须输出的格式
+      en_US: specifying the format that the model must output
+    required: false
+    options:
+      - text
+      - json_object
   - name: json_schema
     use_template: json_schema
+  - name: safety_settings
+    type: string
+    label:
+      zh_Hans: 安全设置
+      en_US: Safety Settings
+    help:
+      zh_Hans: 安全设置
+      en_US: Safety Settings
+    required: false
+    options:
+      - 'OFF'
+      - 'BLOCK_NONE'
+      - 'BLOCK_ONLY_HIGH'
+      - 'BLOCK_MEDIUM_AND_ABOVE'
+      - 'BLOCK_LOW_AND_ABOVE'
 pricing:
   input: '0.00'
   output: '0.00'
