@@ -314,8 +314,11 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
                     if c.type == PromptMessageContentType.TEXT:
                         glm_content.parts.append(types.Part.from_text(text=c.data))
                     else:
-                        uri, mime_type = self._upload_file_content_to_google(message_content=c, credentials=credentials)
-                        glm_content.parts.append(types.Part.from_uri(file_uri=uri, mime_type=mime_type))
+                        if credentials["enable_file_upload"] == "no":
+                            glm_content.parts.append(types.Part.from_bytes(data=base64.b64decode(c.base64_data), mime_type=c.mime_type))
+                        else:
+                            uri, mime_type = self._upload_file_content_to_google(message_content=c, credentials=credentials)
+                            glm_content.parts.append(types.Part.from_uri(file_uri=uri, mime_type=mime_type))
 
             return glm_content
         elif isinstance(message, AssistantPromptMessage):

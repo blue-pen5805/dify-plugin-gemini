@@ -1,4 +1,4 @@
-background: "#FCFDFF"
+background: '#FCFDFF'
 configurate_methods:
   - predefined-model
 description:
@@ -53,5 +53,19 @@ provider_credential_schema:
       required: false
       type: text-input
       variable: file_url
+    - label:
+        en_US: Enable file upload
+      type: radio
+      options:
+        - label:
+            en_US: 'Yes'
+            zh_Hans: 是
+          value: 'yes'
+        - label:
+            en_US: 'No'
+            zh_Hans: 否
+          value: 'no'
+      default: 'yes'
+      variable: enable_file_upload
 supported_model_types:
   - llm
