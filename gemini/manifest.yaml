@@ -1,0 +1,29 @@
+author: blue_pen5805
+created_at: "2024-09-20T00:13:50.29298939-04:00"
+description:
+  en_US: Google's Gemini model.
+  zh_Hans: 谷歌提供的 Gemini 模型.
+icon: icon_s_en.svg
+label:
+  en_US: Gemini
+meta:
+  arch:
+    - amd64
+    - arm64
+  runner:
+    entrypoint: main
+    language: python
+    version: "3.12"
+  version: 0.0.2
+name: gemini
+plugins:
+  models:
+    - provider/google.yaml
+resource:
+  memory: 1048576
+  permission:
+    model:
+      enabled: true
+      llm: true
+type: plugin
+version: 0.1.3
