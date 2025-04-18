@@ -11,6 +11,7 @@ forked from [Official Plugin](https://github.com/langgenius/dify-official-plugin
   - Add `response_format` parameter.
   - Add `safety_settings` parameter.
   - Add `thinking_budget` parameter.
+  - Add `code_execution` parameter.
 - supports `FinishReason.SAFETY`.
 - Remove deprecated models.
 

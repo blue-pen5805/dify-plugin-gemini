@@ -44,6 +44,17 @@ parameter_rules:
       ja_JP: Google検索に基づいた応答をします。
     required: true
     default: false
+  - name: code_execution
+    label:
+      zh_Hans: 代码执行
+      en_US: Code Execution
+      ja_JP: コード実行
+    type: boolean
+    help:
+      zh_Hans: 允许模型执行代码
+      en_US: Allow the model to execute code
+    required: true
+    default: false
   - name: response_format
     label:
       zh_Hans: 回复格式

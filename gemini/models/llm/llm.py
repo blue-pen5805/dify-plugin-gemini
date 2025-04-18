@@ -248,6 +248,8 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         config.tools = []
         if model_parameters.get("grounding"):
             config.tools.append(types.Tool(google_search=types.GoogleSearch()))
+        if model_parameters.get("code_execution"):
+            config.tools.append(types.Tool(code_execution=types.ToolCodeExecution()))
         if tools:
             config.tools.append(self._convert_tools_to_glm_tool(tools))
 
