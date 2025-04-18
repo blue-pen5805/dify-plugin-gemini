@@ -35,6 +35,7 @@ from dify_plugin.errors.model import (
 )
 from dify_plugin.interfaces.model.large_language_model import LargeLanguageModel
 
+from . import patch
 from .utils import FileCache
 
 
@@ -208,7 +209,11 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
             config.response_mime_type = "application/json"
         elif model_parameters.get("response_format") == "json_object":
             config.response_mime_type = "application/json"
-
+        thinking_budget = model_parameters.get("thinking_budget")
+        if thinking_budget is not None:
+            config.thinking_config = types.ThinkingConfig(
+                thinking_budget=thinking_budget,
+            )
         if safety_settings := model_parameters.get("safety_settings"):
             config.safety_settings = [
                 types.SafetySetting(

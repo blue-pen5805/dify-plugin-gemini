@@ -1,7 +1,7 @@
-# https://ai.google.dev/gemini-api/docs/models?hl=zh-cn#gemini-2.5-pro-preview-03-25
-model: gemini-2.5-pro-preview-03-25
+# https://ai.google.dev/gemini-api/docs/models#gemini-2.5-flash-preview
+model: gemini-2.5-flash-preview-04-17
 label:
-  en_US: Gemini 2.5 Pro Preview 03-25
+  en_US: Gemini 2.5 Flash Preview 04-17
 model_type: llm
 features:
   - agent-thought
@@ -32,7 +32,7 @@ parameter_rules:
     required: false
   - name: max_output_tokens
     use_template: max_tokens
-    default: 8192
+    default: 65536
     min: 1
     max: 65536
   - name: thinking_budget
