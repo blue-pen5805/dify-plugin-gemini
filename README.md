@@ -10,6 +10,7 @@ forked from [Official Plugin](https://github.com/langgenius/dify-official-plugin
   - Temperature range: `0.0` - `2.0`
   - Add `response_format` parameter.
   - Add `safety_settings` parameter.
+  - Add `thinking_budget` parameter.
 - supports `FinishReason.SAFETY`.
 - Remove deprecated models.
 
