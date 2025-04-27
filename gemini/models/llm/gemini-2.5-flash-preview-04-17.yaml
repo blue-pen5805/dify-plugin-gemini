@@ -100,7 +100,7 @@ parameter_rules:
       - 'BLOCK_MEDIUM_AND_ABOVE'
       - 'BLOCK_LOW_AND_ABOVE'
 pricing:
-  input: '1.25'
-  output: '10.00'
+  input: '0.15'
+  output: '0.60'
   unit: '0.000001'
   currency: USD
