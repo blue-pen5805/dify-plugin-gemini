@@ -193,11 +193,12 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         conditions = [
             bool(model_parameters.get("json_schema")),
             bool(model_parameters.get("grounding")),
+            bool(model_parameters.get("code_execution")),
             bool(tools),
         ]
         if sum(conditions) >= 2:
             raise errors.FunctionInvocationError(
-                "gemini not support use multiple features at same time: json_schema, grounding, tools+knowledge"
+                "gemini not support use multiple features at same time: json_schema, grounding, code_execution, tools+knowledge"
             )
         config = types.GenerateContentConfig()
         if schema := model_parameters.get("json_schema"):
@@ -274,14 +275,14 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
                 contents=history,
                 config=config,
             )
-            return self._handle_generate_stream_response(model, credentials, response, prompt_messages)
+            return self._handle_generate_stream_response(model, credentials, model_parameters, response, prompt_messages)
 
         response = self.client.models.generate_content(
             model=model,
             contents=history,
             config=config,
         )
-        return self._handle_generate_response(model, credentials, response, prompt_messages)
+        return self._handle_generate_response(model, credentials, model_parameters, response, prompt_messages)
 
     def _convert_one_message_to_text(self, message: PromptMessage) -> str:
         """
@@ -397,6 +398,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
             self,
             model: str,
             credentials: dict,
+            model_parameters: dict,
             response: types.GenerateContentResponse,
             prompt_messages: list[PromptMessage],
     ) -> LLMResult:
@@ -405,6 +407,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
 
         :param model: model name
         :param credentials: credentials
+        :param model_parameters: model parameters
         :param response: response
         :param prompt_messages: prompt messages
         :return: llm response
@@ -437,6 +440,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
             self,
             model: str,
             credentials: dict,
+            model_parameters: dict,
             response: Iterator[types.GenerateContentResponse],
             prompt_messages: list[PromptMessage],
     ) -> Generator:
@@ -445,6 +449,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
 
         :param model: model name
         :param credentials: credentials
+        :param model: model name
         :param response: response
         :param prompt_messages: prompt messages
         :return: llm response chunk generator result
@@ -478,7 +483,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
             if r.candidates[0].finish_reason:
                 assistant_prompt_message = AssistantPromptMessage(content="")
                 grounding_metadata = r.candidates[0].grounding_metadata
-                if grounding_metadata and grounding_metadata.search_entry_point:
+                if model_parameters.get("include_search_sources") and grounding_metadata and grounding_metadata.search_entry_point:
                     assistant_prompt_message.content += self._render_grounding_source(grounding_metadata)
                 # calculate num tokens
                 prompt_tokens = r.usage_metadata.prompt_token_count or self.get_num_tokens(

@@ -38,21 +38,24 @@ parameter_rules:
   - name: grounding
     label:
       en_US: Grounding
-      ja_JP: Grounding
     type: boolean
     help:
       en_US: ensures responses are based on Google Search.
-      ja_JP: Google検索に基づいた応答をします。
+    required: true
+    default: false
+  - name: include_search_sources
+    label:
+      en_US: Include Search Sources
+    type: boolean
+    help:
+      en_US: include search results in the response text. (if grounding is enabled)
     required: true
     default: false
   - name: code_execution
     label:
-      zh_Hans: 代码执行
       en_US: Code Execution
-      ja_JP: コード実行
     type: boolean
     help:
-      zh_Hans: 允许模型执行代码
       en_US: Allow the model to execute code
     required: true
     default: false

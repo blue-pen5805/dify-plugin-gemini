@@ -13,6 +13,7 @@ Based on version 0.1.5 of the official plugin.
   - Add `safety_settings` parameter.
   - Add `thinking_budget` parameter.
   - Add `code_execution` parameter.
+  - Add `include_search_sources` parameter.
 - Supports `FinishReason.SAFETY`.
 - Remove deprecated models.
 
