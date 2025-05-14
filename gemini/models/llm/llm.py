@@ -35,7 +35,6 @@ from dify_plugin.errors.model import (
 )
 from dify_plugin.interfaces.model.large_language_model import LargeLanguageModel
 
-from . import patch
 from .utils import FileCache
 
 
