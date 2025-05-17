@@ -275,11 +275,14 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
 
         history = []
         file_server_url_prefix = credentials.get("file_url") or None
+        enable_file_upload = credentials.get("enable_file_upload", "yes") == "yes"
         for msg in prompt_messages:  # makes message roles strictly alternating
             content = self._format_message_to_glm_content(
                 msg,
                 genai_client=genai_client,
-                file_server_url_prefix=file_server_url_prefix)
+                file_server_url_prefix=file_server_url_prefix,
+                enable_file_upload=enable_file_upload
+            )
             if history and history[-1].role == content.role:
                 history[-1].parts.extend(content.parts)
             else:
@@ -355,6 +358,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
     def _format_message_to_glm_content(
             self, message: PromptMessage, genai_client: genai.Client,
             file_server_url_prefix: str|None=None,
+            enable_file_upload: bool = True,
         ) -> types.Content:
         """
         Format a single message into glm.Content for Google API
@@ -371,7 +375,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
                     if c.type == PromptMessageContentType.TEXT:
                         glm_content.parts.append(types.Part.from_text(text=c.data))
                     else:
-                        if credentials["enable_file_upload"] == "no":
+                        if not enable_file_upload:
                             glm_content.parts.append(types.Part.from_bytes(data=base64.b64decode(c.base64_data), mime_type=c.mime_type))
                         else:
                             uri, mime_type = self._upload_file_content_to_google(
