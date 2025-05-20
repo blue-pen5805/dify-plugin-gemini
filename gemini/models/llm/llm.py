@@ -197,16 +197,6 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         stream: bool = True,
         user: Optional[str] = None,
     ) -> Union[LLMResult, Generator[LLMResultChunk]]:
-        conditions: list[bool] = [
-            bool(model_parameters.get("json_schema")),
-            bool(model_parameters.get("grounding")),
-            bool(model_parameters.get("code_execution")),
-            bool(tools),
-        ]
-        if sum(conditions) >= 2:
-            raise InvokeError(
-                "gemini not support use multiple features at same time: json_schema, grounding, code_execution, tools+knowledge"
-            )
         config = types.GenerateContentConfig()
         if system_instruction := self._get_system_instruction(prompt_messages=prompt_messages):
             config.system_instruction = system_instruction
@@ -261,6 +251,8 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         config.tools = []
         if model_parameters.get("grounding"):
             config.tools.append(types.Tool(google_search=types.GoogleSearch()))
+        if model_parameters.get("url_context"):
+            config.tools.append(types.Tool(url_context=types.UrlContext()))
         if model_parameters.get("code_execution"):
             config.tools.append(types.Tool(code_execution=types.ToolCodeExecution()))
         if tools:
@@ -563,10 +555,16 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
                         prompt_tokens=prompt_tokens,
                         completion_tokens=completion_tokens,
                     )
-                    grounding_metadata = candidate.grounding_metadata
-                    if model_parameters.get("include_search_sources") and grounding_metadata and grounding_metadata.search_entry_point:
+                    if model_parameters.get("include_search_sources"):
+                        additional_content = ""
+                        grounding_metadata = candidate.grounding_metadata
+                        url_context_metadata = candidate.url_context_metadata
+                        if grounding_metadata and grounding_metadata.search_entry_point:
+                            additional_content += self._render_grounding_source(grounding_metadata)
+                        if url_context_metadata:
+                            additional_content += self._render_url_context(url_context_metadata)
                         message = AssistantPromptMessage(
-                            content=message.content + [TextPromptMessageContent(data=self._render_grounding_source(grounding_metadata))],
+                            content=message.content + [TextPromptMessageContent(data=additional_content)],
                             tool_calls=message.tool_calls
                         )
                     yield LLMResultChunk(
@@ -584,11 +582,23 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         """
         Render google search source links
         """
+        if len(grounding_metadata.grounding_chunks or []) == 0:
+            return ""
         result = "\n\n**Search Sources:**\n"
         for index, entry in enumerate(grounding_metadata.grounding_chunks, start=1):
             result += f"{index}. [{entry.web.title}]({entry.web.uri})\n"
         return result
 
+    def _render_url_context(self, url_context_metadata: types.UrlContextMetadata) -> str:
+        """
+        Render url context
+        """
+        if len(url_context_metadata.url_metadata or []) == 0:
+            return ""
+        result = "\n\n**URL Contexts:**\n"
+        for index, entry in enumerate(url_context_metadata.url_metadata, start=1):
+            result += f"{index}. [{entry.retrieved_url}]({entry.retrieved_url})\n"
+        return result
 
     @property
     def _invoke_error_mapping(self) -> dict[type[InvokeError], list[type[Exception]]]:
