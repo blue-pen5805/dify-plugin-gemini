@@ -1,7 +1,7 @@
-# https://ai.google.dev/gemini-api/docs/models#gemini-2.5-flash-preview
-model: gemini-2.5-flash-preview-04-17
+# https://ai.google.dev/gemini-api/docs/models#gemini-2.5-pro-preview-06-05
+model: gemini-2.5-pro-preview-06-05
 label:
-  en_US: Gemini 2.5 Flash Preview 04-17
+  en_US: Gemini 2.5 Pro Preview 06-05
 model_type: llm
 features:
   - agent-thought
@@ -33,7 +33,7 @@ parameter_rules:
     required: false
   - name: max_output_tokens
     use_template: max_tokens
-    default: 65536
+    default: 8192
     min: 1
     max: 65536
   - name: thinking_budget
@@ -56,12 +56,20 @@ parameter_rules:
       en_US: ensures responses are based on Google Search.
     required: true
     default: false
-  - name: include_search_sources
+  - name: url_context
     label:
-      en_US: Include Search Sources
+      en_US: URL context
     type: boolean
     help:
-      en_US: include search results in the response text. (if grounding is enabled)
+      en_US: ensures responses are based on the provided URL context.
+    required: true
+    default: false
+  - name: include_search_sources
+    label:
+      en_US: Include Sources
+    type: boolean
+    help:
+      en_US: include search results and URL context in the response text.
     required: true
     default: false
   - name: code_execution
@@ -102,8 +110,7 @@ parameter_rules:
       - 'BLOCK_MEDIUM_AND_ABOVE'
       - 'BLOCK_LOW_AND_ABOVE'
 pricing:
-  input: '0.15'
-  output: '0.60'
+  input: '1.25'
+  output: '10.00'
   unit: '0.000001'
   currency: USD
-deprecated: true
