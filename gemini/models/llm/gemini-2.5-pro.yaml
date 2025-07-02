@@ -47,7 +47,7 @@ parameter_rules:
     required: false
     default: 8000
     min: 0
-    max: 24576
+    max: 32768
   - name: grounding
     label:
       en_US: Grounding
