@@ -13,6 +13,7 @@ Based on version 0.2.6 of the official plugin.
   - Add `response_format` parameter.
   - Add `safety_settings` parameter.
   - Add `thinking_budget` parameter.
+  - Add `include_thoughts` parameter.
   - Add `url_context` parameter.
   - Add `code_execution` parameter.
   - Add `include_search_sources` parameter.

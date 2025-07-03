@@ -39,16 +39,25 @@ parameter_rules:
     max: 64000
   - name: thinking_budget
     label:
-      zh_Hans: 思考预算
       en_US: Thinking Budget
+      zh_Hans: 思考预算
     type: int
     help:
-      zh_Hans: 模型指导思考所需的令牌数
       en_US: model guidance on how many thinking tokens. (zero to disable)
+      zh_Hans: 模型指导思考所需的令牌数
     required: false
     default: 8000
     min: 0
     max: 24576
+  - name: include_thoughts
+    label:
+      en_US: Include Thoughts
+      zh_Hans: 包含思考
+    type: boolean
+    help:
+      en_US: Whether to include the thought content.
+      zh_Hans: 是否包含思考内容
+    default: false
   - name: grounding
     label:
       en_US: Grounding

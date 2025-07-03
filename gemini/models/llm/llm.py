@@ -212,10 +212,12 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         else:
             # Enable multimodal support only if JSON schema is not provided.
             config.response_modalities = self._get_response_modalities(model)
-        thinking_budget = model_parameters.get("thinking_budget")
-        if thinking_budget is not None:
+        thinking_budget = model_parameters.get("thinking_budget", None)
+        include_thoughts = model_parameters.get("include_thoughts", None)
+        if thinking_budget is not None or include_thoughts is not None:
             config.thinking_config = types.ThinkingConfig(
                 thinking_budget=thinking_budget,
+                include_thoughts=include_thoughts,
             )
         if safety_settings := model_parameters.get("safety_settings"):
             config.safety_settings = [
@@ -511,6 +513,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         index = -1
         prompt_tokens = 0
         completion_tokens = 0
+        is_reasoning_started = False
         for chunk in response:
             if not chunk.candidates:
                 continue
@@ -518,7 +521,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
                 if not candidate.content or not candidate.content.parts:
                     continue
 
-                message = self._parse_parts(candidate.content.parts)
+                message, is_reasoning_started = self._parse_parts(candidate.content.parts, is_reasoning_started)
                 index += len(candidate.content.parts)
                 if chunk.usage_metadata:
                     prompt_tokens += chunk.usage_metadata.prompt_token_count or 0
@@ -621,12 +624,23 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
             ],
         }
 
-    def _parse_parts(self, parts: Sequence[types.Part], /) -> AssistantPromptMessage:
+    def _parse_parts(self, parts: Sequence[types.Part], /, is_reasoning_started: bool) -> AssistantPromptMessage:
         contents: list[PromptMessageContent] = []
         function_calls = []
+        is_reasoning = is_reasoning_started
         for part in parts:
             if part.text:
-                contents.append(TextPromptMessageContent(data=part.text))
+                if part.thought:
+                    if not is_reasoning:
+                        contents.append(TextPromptMessageContent(data="<think>\n" + part.text))
+                        is_reasoning = True
+                    else:
+                        contents.append(TextPromptMessageContent(data=part.text))
+                elif is_reasoning:
+                    contents.append(TextPromptMessageContent(data="\n</think>" + part.text))
+                    is_reasoning = False
+                else:
+                    contents.append(TextPromptMessageContent(data=part.text))
             if part.function_call:
                 function_call = part.function_call
                 # Generate a unique ID since Gemini API doesn't provide one
@@ -675,7 +689,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         message = AssistantPromptMessage(
             content=contents, tool_calls=function_calls  # type: ignore
         )
-        return message
+        return message, is_reasoning
 
     def _convert_to_contents(self, prompt_messages: Sequence[PromptMessage]) -> list[types.ContentDict]:
         """_convert_to_content convert input prompt messages to contents sent to Google
