@@ -1,19 +1,20 @@
-# https://ai.google.dev/gemini-api/docs/models#gemini-2.5-flash-lite
+# https://ai.google.dev/gemini-api/docs/models?hl=zh-cn#gemini-2.5-flash-lite
 model: gemini-2.5-flash-lite-preview-06-17
 label:
-  en_US: Gemini 2.5 Flash Lite Preview 06-17
+  en_US: Gemini 2.5 Flash-Lite Preview 06-17
 model_type: llm
 features:
+  - tool-call
+  - multi-tool-call
   - agent-thought
   - vision
-  - tool-call
   - stream-tool-call
   - document
   - video
   - audio
 model_properties:
   mode: chat
-  context_size: 1048576
+  context_size: 1000000
 parameter_rules:
   - name: temperature
     use_template: temperature
@@ -33,9 +34,9 @@ parameter_rules:
     required: false
   - name: max_output_tokens
     use_template: max_tokens
-    default: 65536
+    default: 64000
     min: 1
-    max: 65536
+    max: 64000
   - name: thinking_budget
     label:
       zh_Hans: 思考预算
@@ -51,9 +52,13 @@ parameter_rules:
   - name: grounding
     label:
       en_US: Grounding
+      zh_Hans: 事实核查
+      ja_JP: 事実チェック
     type: boolean
     help:
-      en_US: ensures responses are based on Google Search.
+      en_US: Grounding with Google Search
+      zh_Hans: Google 事实核查
+      ja_JP: Google検索に基づいた応答をします。
     required: true
     default: false
   - name: url_context
@@ -110,7 +115,7 @@ parameter_rules:
       - 'BLOCK_MEDIUM_AND_ABOVE'
       - 'BLOCK_LOW_AND_ABOVE'
 pricing:
-  input: '0.1'
-  output: '0.4'
+  input: '0.10'
+  output: '0.40'
   unit: '0.000001'
   currency: USD

@@ -4,7 +4,7 @@ forked from [Official Plugin](https://github.com/langgenius/dify-official-plugin
 
 ## Changes
 
-Based on version 0.2.4 of the official plugin.
+Based on version 0.2.6 of the official plugin.
 
 - Fix `Search Sources` not working.
 - Add `base_url` parameter.

@@ -3,16 +3,13 @@ label:
   en_US: Gemini 2.0 Flash Preview Image Generation
 model_type: llm
 features:
-  - agent-thought
   - vision
-  - tool-call
-  - stream-tool-call
   - document
   - video
   - audio
 model_properties:
   mode: chat
-  context_size: 1048576
+  context_size: 32000
 parameter_rules:
   - name: temperature
     use_template: temperature
@@ -38,7 +35,7 @@ parameter_rules:
   - name: json_schema
     use_template: json_schema
 pricing:
-  input: '0.10'
-  output: '0.40'
+  input: '0.00'
+  output: '0.00'
   unit: '0.000001'
   currency: USD
