@@ -1,7 +1,7 @@
 # https://ai.google.dev/gemini-api/docs/models?hl=zh-cn#gemini-2.5-flash-lite
-model: gemini-2.5-flash-lite-preview-06-17
+model: gemini-2.5-flash-lite
 label:
-  en_US: Gemini 2.5 Flash-Lite Preview 06-17
+  en_US: Gemini 2.5 Flash-Lite
 model_type: llm
 features:
   - tool-call
@@ -128,4 +128,3 @@ pricing:
   output: '0.40'
   unit: '0.000001'
   currency: USD
-deprecated: true
