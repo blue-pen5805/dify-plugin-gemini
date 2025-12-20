@@ -34,44 +34,44 @@ models:
 provider: google
 provider_credential_schema:
   credential_form_schemas:
-    - label:
-        en_US: API Key
-      placeholder:
-        en_US: Enter your API Key
-        zh_Hans: 在此输入您的 API Key
-      required: true
-      type: secret-input
-      variable: google_api_key
-    - label:
-        en_US: API Base
-      type: text-input
-      required: false
-      default: https://generativelanguage.googleapis.com
-      placeholder:
-        en_US: Enter your API Base
-      variable: endpoint_url
-    - label:
-        en_US: Files URL
-      placeholder:
-        en_US: Enter the Local FILES URL prefix to get better upload performance
-        zh_Hans: 在此输入本地文件地址的URL前缀
-      required: false
-      type: text-input
-      variable: file_url
-    - label:
-        en_US: Enable file upload
-      type: radio
-      options:
-        - label:
-            en_US: 'Yes'
-            zh_Hans: 是
-          value: 'yes'
-        - label:
-            en_US: 'No'
-            zh_Hans: 否
-          value: 'no'
-      default: 'yes'
-      variable: enable_file_upload
+  - label:
+      en_US: API Key
+    placeholder:
+      en_US: Enter your API Key
+      zh_Hans: 在此输入您的 API Key
+    required: true
+    type: secret-input
+    variable: google_api_key
+  - label:
+      en_US: Base URL
+    placeholder:
+      en_US: Enter your Base URL
+      zh_Hans: 在此输入您的 Base URL
+    required: false
+    type: text-input
+    variable: endpoint_url
+  - label:
+      en_US: Files URL
+    placeholder:
+      en_US: Enter the Local FILES URL prefix to get better upload performance
+      zh_Hans: 在此输入本地文件地址的URL前缀
+    required: false
+    type: text-input
+    variable: file_url
+  - label:
+      en_US: Enable file upload
+    type: radio
+    options:
+      - label:
+          en_US: 'Yes'
+          zh_Hans: 是
+        value: 'yes'
+      - label:
+          en_US: 'No'
+          zh_Hans: 否
+        value: 'no'
+    default: 'yes'
+    variable: enable_file_upload
 supported_model_types:
   - llm
   - text-embedding

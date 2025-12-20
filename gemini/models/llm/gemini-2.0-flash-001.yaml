@@ -36,29 +36,37 @@ parameter_rules:
     min: 1
     max: 8192
   - name: grounding
+    type: boolean
+    required: true
+    default: false
     label:
       en_US: Grounding
-    type: boolean
+      zh_Hans: 事实核查
+      ja_JP: 事実チェック
     help:
-      en_US: ensures responses are based on Google Search.
+      en_US: Grounding with Google Search
+      zh_Hans: Google 事实核查
+      ja_JP: Google検索に基づいた応答をします。
+  - name: include_search_sources
+    type: boolean
     required: true
     default: false
-  - name: include_search_sources
     label:
       en_US: Include Search Sources
-    type: boolean
     help:
       en_US: include search results in the response text. (if grounding is enabled)
-    required: true
-    default: false
   - name: code_execution
-    label:
-      en_US: Code Execution
     type: boolean
-    help:
-      en_US: Allow the model to execute code
     required: true
     default: false
+    label:
+        en_US: Code execution
+        zh_Hans: 代码执行
+        ja_JP: コード実行
+    help:
+      en_US: Lets Gemini use code to solve complex tasks
+      zh_Hans: 让 Gemini 使用代码来解决复杂任务。
+      ja_JP: Gemini にコードを使って複雑なタスクを解決させましょう。
   - name: response_format
     label:
       zh_Hans: 回复格式
@@ -73,21 +81,6 @@ parameter_rules:
       - json_object
   - name: json_schema
     use_template: json_schema
-  - name: safety_settings
-    type: string
-    label:
-      zh_Hans: 安全设置
-      en_US: Safety Settings
-    help:
-      zh_Hans: 安全设置
-      en_US: Safety Settings
-    required: false
-    options:
-      - 'OFF'
-      - 'BLOCK_NONE'
-      - 'BLOCK_ONLY_HIGH'
-      - 'BLOCK_MEDIUM_AND_ABOVE'
-      - 'BLOCK_LOW_AND_ABOVE'
 pricing:
   input: '0.00'
   output: '0.00'

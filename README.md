@@ -7,17 +7,10 @@ forked from [Official Plugin](https://github.com/langgenius/dify-official-plugin
 Based on version 0.2.7 of the official plugin.
 
 - Fix `Search Sources` not working.
-- Add `base_url` parameter.
 - Add `Enable file upload` options. (Disable to use `Files API`)
 - Modify model parameters.
   - Add `response_format` parameter.
-  - Add `safety_settings` parameter.
-  - Add `thinking_budget` parameter.
-  - Add `include_thoughts` parameter.
-  - Add `url_context` parameter.
-  - Add `code_execution` parameter.
   - Add `include_search_sources` parameter.
-- Supports `FinishReason.SAFETY`
 - Add new models.
 - Remove deprecated models.
 
