@@ -4,7 +4,7 @@ forked from [Official Plugin](https://github.com/langgenius/dify-official-plugin
 
 ## Changes
 
-Based on version 0.2.7 of the official plugin.
+Based on version 0.7.1 of the official plugin.
 
 - Fix `Search Sources` not working.
 - Add `Enable file upload` options. (Disable to use `Files API`)
