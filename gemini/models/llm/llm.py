@@ -52,6 +52,7 @@ IMAGE_GENERATION_MODELS = {
     "gemini-2.5-flash-image-preview",
     "gemini-2.5-flash-image",
     "gemini-3-pro-image-preview",
+    "gemini-3.1-flash-image-preview",
 }
 
 # https://ai.google.dev/gemini-api/docs/thought-signatures#faqs
@@ -386,6 +387,10 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
                 "9:16",
                 "16:9",
                 "21:9",
+                "1:4",
+                "4:1",
+                "1:8",
+                "8:1",
             ]
         ):
             aspect_ratio = None
@@ -394,7 +399,7 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         if (
             not resolution
             or not isinstance(resolution, str)
-            or resolution not in ["1K", "2K", "4K"]
+            or resolution not in ["512px", "1K", "2K", "4K"]
         ):
             resolution = None
 
@@ -562,6 +567,9 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
 
         if model_parameters.get("grounding"):
             config.tools.append(types.Tool(google_search=types.GoogleSearch()))
+
+        if model_parameters.get("image_search_grounding"):
+            config.tools.append(types.Tool(google_search=types.ImageSearch()))
 
         if model_parameters.get("url_context"):
             config.tools.append(types.Tool(url_context=types.UrlContext()))
