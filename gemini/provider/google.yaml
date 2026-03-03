@@ -3,7 +3,7 @@ configurate_methods:
   - predefined-model
 description:
   en_US: Google's Gemini model.
-  zh_Hans: 谷歌提供的 Gemini 模型.
+  zh_Hans: 谷歌提供的 Gemini 模型。
 extra:
   python:
     model_sources:
