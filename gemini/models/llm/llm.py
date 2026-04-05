@@ -55,6 +55,11 @@ IMAGE_GENERATION_MODELS = {
     "gemini-3.1-flash-image-preview",
 }
 
+GEMMA_MODELS = {
+    "gemini-gemma-4-26b-a4b-it",
+    "gemini-gemma-4-31b-it",
+}
+
 # https://ai.google.dev/gemini-api/docs/thought-signatures#faqs
 DEFAULT_THOUGHT_SIGNATURE: bytes = b"skip_thought_signature_validator"
 
@@ -1084,6 +1089,10 @@ class GoogleLargeLanguageModel(LargeLanguageModel):
         :return: full response or stream response chunk generator result
         """
         _ = user
+        # For Gemma models, we use the gemini prefix for processing reasons, so we remove it here
+        if model in GEMMA_MODELS:
+            model = model.replace("gemini-", "")
+
         return self._generate(
             model,
             credentials,
