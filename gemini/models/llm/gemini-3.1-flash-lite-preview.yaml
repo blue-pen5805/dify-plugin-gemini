@@ -164,6 +164,6 @@ parameter_rules:
 pricing:
   # prompts <= 200k tokens
   input: '0.25'
-  output: '0.5'
+  output: '1.50'
   unit: '0.000001'
   currency: USD

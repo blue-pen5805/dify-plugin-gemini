@@ -1,4 +1,4 @@
-# https://ai.google.dev/gemini-api/docs/models?hl=zh-cn#gemini-2.5-pro
+# https://ai.google.dev/gemini-api/docs/models/gemini-2.5-pro
 model: gemini-2.5-pro
 label:
   en_US: Gemini 2.5 Pro
@@ -23,6 +23,7 @@ parameter_rules:
     max: 2
   - name: top_p
     use_template: top_p
+    default: 0.95
   - name: top_k
     label:
       zh_Hans: 取样数量
@@ -70,7 +71,7 @@ parameter_rules:
     help:
       en_US: Grounding with Google Search
       zh_Hans: Google 事实核查
-      ja_JP: Google検索に基づいた応答をします。
+      ja_JP: Google 検索に基づいた応答をします。
   - name: url_context
     type: boolean
     required: true
@@ -117,7 +118,7 @@ parameter_rules:
       - json_object
   - name: json_schema
     use_template: json_schema
-# https://ai.google.dev/gemini-api/docs/pricing?hl=zh-cn#gemini-2.5-pro
+# https://ai.google.dev/gemini-api/docs/pricing#gemini-2.5-pro
 pricing:
   input: '1.25'
   output: '10.00'

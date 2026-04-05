@@ -80,7 +80,7 @@ parameter_rules:
     help:
       en_US: Grounding with Google Search
       zh_Hans: Google 事实核查
-      ja_JP: Google検索に基づいた応答をします。
+      ja_JP: Google 検索に基づいた応答をします。
   - name: include_search_sources
     type: boolean
     required: true

@@ -80,7 +80,7 @@ parameter_rules:
     help:
       en_US: Grounding with Google Search
       zh_Hans: Google 事实核查
-      ja_JP: Google検索に基づいた応答をします。
+      ja_JP: Google 検索に基づいた応答をします。
   - name: url_context
     type: boolean
     required: true
@@ -127,7 +127,6 @@ parameter_rules:
       - json_object
   - name: json_schema
     use_template: json_schema
-# https://ai.google.dev/gemini-api/docs/pricing?hl=zh-cn#gemini-2.5-flash
 pricing:
   input: '0.15'
   output: '0.60'
